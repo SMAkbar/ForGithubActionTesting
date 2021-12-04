@@ -9,11 +9,6 @@ jobs:
               with:
                   repository: near/nearcore
             
-            - name: 'Make Sandbox'
-              working-directory: ./
-              if: steps.cache.outputs.cache-hit != 'true'
-              run: make sandbox
-
             - uses: actions/cache@v2
               with:
                 path: |
@@ -23,6 +18,11 @@ jobs:
                   ~/.cargo/git/db/
                   target/
                 key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+            - name: 'Make Sandbox'
+              working-directory: ./
+              if: steps.cache.outputs.cache-hit != 'true'
+              run: make sandbox
 
             - name: 'Building near'
               working-directory: ./
@@ -35,11 +35,11 @@ jobs:
               with:
                   node-version: '15'
             - name: 'Building contracts'
-              working-directory: ./packages/contracts
+              working-directory: ./
               run: |
                   ls
             - name: 'Testing contracts'
-              working-directory: ./packages/contracts
+              working-directory: ./
               run: |
                   ls
 
